@@ -1,62 +1,40 @@
-# OpenCode **Codex Switch**
+# OpenCode Codex Switch
 
-Switch between saved OpenAI OAuth accounts inside OpenCode with a native TUI dialog through `/switch-codex`.
-
-> [!IMPORTANT]
-> Version 1.x supports OpenCode v2 only. OpenCode v1 is no longer supported; use the final 0.x release if you must remain on v1.
+Manage and switch saved OpenAI OAuth accounts in OpenCode with `/switch-codex`.
 
 ## Install
 
-Recommended:
-
-```bash
-opencode plugin -g opencode-codex-switch
+```sh
+opencode plugin add opencode-codex-switch
 ```
 
-Manual install:
+## Usage
 
-For a global manual install, add the plugin to `~/.config/opencode/opencode.json`.
+1. Run `/switch-codex` or select **Switch Codex account** in the command palette.
+2. Select an account with `Enter`.
+3. Choose **Switch to this account**, **Rename**, or **Remove from OpenCode**.
 
-`~/.config/opencode/opencode.json`
+The active account is marked **Active account**. Selecting a row opens its actions;
+it does not switch immediately. Press `Esc` to dismiss a selection dialog.
 
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "plugins": ["opencode-codex-switch"]
-}
-```
+## Add an account
 
-The add-account flow uses OpenCode's built-in OpenAI/Codex OAuth methods.
+1. Select **Add or import account**.
+2. Choose an OAuth sign-in method.
+3. Follow the displayed instructions and open the authorization URL in your browser.
+4. Choose **Check authorization** after authorizing, or enter the requested code.
 
-## Use It
-
-Open the account switcher with either:
-
-- `/switch-codex`
-- Command palette -> `Switch Codex Account`
-
-Inside the dialog:
-
-- `Enter` switches to the selected saved account
-- `a` starts OpenCode's OpenAI/Codex OAuth flow to add another account
-- `Ctrl+D` deletes the selected saved account
-
-Each row shows the account email when available, and falls back to the OpenAI account ID when email is unavailable.
-
-## Workflow
-
-The plugin has two parts that work together:
-
-- Server plugin: intercepts `/switch-codex` and forwards it to the TUI command
-- TUI plugin: renders the account picker and handles switching, adding, and deleting accounts through OpenCode's built-in OAuth flow
-
-Saved accounts are stored in OpenCode v2's credential store and the active account is applied through its integration API when you switch.
+Check the **Active account** marker afterward and switch explicitly if needed.
 
 ## Notes
 
-- OpenAI-only: this plugin is currently built for OpenAI OAuth account switching
-- Local storage: saved accounts are written to OpenCode's local data directory
-- Browser required for add-account: adding a new account uses OpenCode's OpenAI/Codex OAuth browser flow
+- Only saved OpenAI OAuth accounts appear, not API keys or other providers.
+- Switching changes the active OpenCode account, not the session's model.
+- Account changes can affect other sessions using the same OpenCode server.
+- Removing an account requires confirmation; it does not revoke access at OpenAI.
+- Existing `codex-switch.json` accounts appear as import options when available.
+  Importing copies credentials into OpenCode and leaves the original file intact.
+  Keep that file private: it contains access and refresh tokens.
 
 ## License
 
